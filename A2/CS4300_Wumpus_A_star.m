@@ -44,4 +44,53 @@ function [solution,nodes] = CS4300_Wumpus_A_star(board,initial_state,goal_state,
 %   u0678302            u0830999
 %   Fall 2017
 
+
+% First initialize the nodes search tree with a single node - our initial state
+nodes(1).parent = [];
+nodes(1).level = 1;
+nodes(1).state = initial_state;
+nodes(1).action = 0;
+nodes(1).g = 0;
+nodes(1).h = 1;  %% How do you do heuristic????
+nodes(1).cost = nodes(1).g + nodes(1).h;
+nodes(1).children = [];
+
+% Create visited and unvisited lists. Add root to unvisited
+% These lists hold indeces to the nodes list
+visited = [];
+unvisited = [];
+unvisited(1) = nodes(1);   % Add the root to unvisited list
+
+% Loop:
+while true
+%   pop node off unvisited list, add it to visited list
+    n = unvisited(1);
+    unvisited = unvisited([2:end]);
+    visited = [visited, n];
+%   if we are at the solution - return
+    if n.state(1) == goal_state(1) && n.state(2) == goal_state(2)
+        solution = backtrack(nodes, n);
+        return
+    end
+    % Add forward, right, and left children
+    for i=1:3
+        length = size(nodes);
+        length = length + 1;
+
+        nodes(length).parent = n;
+        nodes(length).level = n.level + 1;
+        nodes(length).state = update_location(i, n.state(1), n.state(2), n.state(3));
+        nodes(length).action = i;
+        nodes(length).g = n.g + 1;
+        nodes(length).h = 1; %%%%%% HEURISTIC
+        nodes(length).cost = nodes(length).g + nodes(length).h;
+        nodes(length).children = [];
+
+        n.children = [children, nodes(length)];
+
+        unvisited = insert(unvisited, nodes(length), nodes);
+    end
+    % Sort univisted list for next iteration - sort by cost val
+end
+
 end

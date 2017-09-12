@@ -30,8 +30,12 @@ persistent x_loc;
 persistent y_loc;
 persistent direc;
 persistent board;
+persistent step;
+persistent so;
 
 goal_state = [1,1,2];
+GRAB = 4;
+CLIMB = 6;
 
 % Our initial state is 0 because we haven't found the gold yet.
 if isempty(state)
@@ -41,6 +45,7 @@ if isempty(state)
     direc = 0;
     board = ones(4,4);
     board(translation(x_loc), translation(y_loc)) = 0;
+    step = 0;
 end
 
 switch state
@@ -49,7 +54,8 @@ switch state
         action = ceil((3)*rand(1));
         
         % Since we have safely traveled to this new location, it is safe.
-        board(translation(x_loc), translation(y_loc)) = 0;
+        coords = translation(x_loc, y_loc);
+        board(coords.x, coords.y) = 0;
         
         % Now we need to update our location with the action we have
         % chosen.
@@ -68,26 +74,17 @@ switch state
                 
     % Our other state is if we have found the gold and need to go home
     case 1
-        
+        if step == 0
+            action = GRAB;
+        else
+            if step <= size(so, m)
+                action = so(4, step);
+            else
+                action = CLIMB;
+            end
+        end
+        step = step + 1;
 end
-
-% Second:
-%   Once it finds it: uses A* search to find an optimal sequence of actions
-%   to move from the gold location back to the start location (this means 
-%   keeping track of known clear cells in the board)
-
-
-% Third:
-%   Prepares an escape action sequence that starts with GRAB
-
-
-% Fourth:
-%   Uses move actions to get back to the start
-
-
-% Fifth:
-%   Finishes the sequence with Climb
-
 
 end
 
