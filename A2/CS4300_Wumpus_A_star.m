@@ -51,46 +51,60 @@ nodes(1).level = 1;
 nodes(1).state = initial_state;
 nodes(1).action = 0;
 nodes(1).g = 0;
-nodes(1).h = 1;  %% How do you do heuristic????
-nodes(1).cost = nodes(1).g + nodes(1).h;
+nodes(1).h = feval(h_name, 1, 1, nodes(1).state(1), nodes(1).state(2));
+nodes(1).cost = 0;
 nodes(1).children = [];
-
+num_nodes = 1;
 % Create visited and unvisited lists. Add root to unvisited
 % These lists hold indeces to the nodes list
 visited = [];
-unvisited = [];
-unvisited(1) = nodes(1);   % Add the root to unvisited list
+unvisited = [1];
 
 % Loop:
 while true
+    if isempty(unvisited)
+        solution = [];
+        return
+    end
+    
 %   pop node off unvisited list, add it to visited list
     n = unvisited(1);
     unvisited = unvisited([2:end]);
     visited = [visited, n];
-%   if we are at the solution - return
-    if n.state(1) == goal_state(1) && n.state(2) == goal_state(2)
-        solution = backtrack(nodes, n);
+    next_list = [];
+    
+    if CS4300_Wumpus_solution(board, nodes(n).state, goal_state)
+        solution = CS4300_traceback(nodes,n);
         return
     end
+    
     % Add forward, right, and left children
-    for i=1:3
-        length = size(nodes);
-        length = length + 1;
-
-        nodes(length).parent = n;
-        nodes(length).level = n.level + 1;
-        nodes(length).state = update_location(i, n.state(1), n.state(2), n.state(3));
-        nodes(length).action = i;
-        nodes(length).g = n.g + 1;
-        nodes(length).h = 1; %%%%%% HEURISTIC
-        nodes(length).cost = nodes(length).g + nodes(length).h;
-        nodes(length).children = [];
-
-        n.children = [children, nodes(length)];
-
-        unvisited = insert(unvisited, nodes(length), nodes);
+    for action=1:3
+        next_state = CS4300_Wumpus_transition(nodes(n).state,...
+            action,board);
+        if next_state(1)>0 ...
+            & CS4300_Wumpus_new_state(next_state,unvisited,visited,...
+                nodes)
+            num_nodes = num_nodes + 1;
+            nodes(num_nodes).parent = n;
+            nodes(num_nodes).level = nodes(n).level + 1;
+            nodes(num_nodes).state = next_state;
+            nodes(num_nodes).action = action;
+            nodes(num_nodes).g = nodes(n).g + 1;
+            nodes(num_nodes).h = feval(h_name, 1, 1, nodes(n).state(1), nodes(n).state(2));
+            nodes(num_nodes).f = nodes(num_nodes).g + nodes(num_nodes).h;
+            nodes(num_nodes).cost = nodes(n).cost + 1;
+            nodes(num_nodes).children = [];
+            nodes(n).children = [nodes(n).children,num_nodes];
+       
+            next_list = [next_list, num_nodes];
+        end
     end
     % Sort univisted list for next iteration - sort by cost val
+    % Order by cost column - take node column as new unvisited.
+    % sortrows(matrix, row u wanna sort by) or sort columns
+    unvisited = CS4300_sort_by_cost([unvisited,next_list], nodes);
+    %unvisited = sortrows(unvisited, nodes.cost);
 end
 
 end

@@ -26,9 +26,7 @@ function action = CS4300_agent_Astar(percept)
 % We need to keep track of our state so that when we are going back to the
 % start, we know which step we are on.
 persistent state;
-persistent x_loc;
-persistent y_loc;
-persistent direc;
+persistent agent_state;
 persistent board;
 persistent step;
 persistent so;
@@ -40,12 +38,12 @@ CLIMB = 6;
 % Our initial state is 0 because we haven't found the gold yet.
 if isempty(state)
     state = 0;
-    x_loc = 1;
-    y_loc = 1;
-    direc = 0;
+    agent_state(1) = 1;
+    agent_state(2) = 1;
+    agent_state(3) = 0;
     board = ones(4,4);
-    board(translation(x_loc), translation(y_loc)) = 0;
-    step = 0;
+    board(CS4300_board_translation(agent_state(1)), agent_state(2)) = 0;
+    step = 1;
 end
 
 switch state
@@ -54,31 +52,34 @@ switch state
         action = ceil((3)*rand(1));
         
         % Since we have safely traveled to this new location, it is safe.
-        coords = translation(x_loc, y_loc);
-        board(coords.x, coords.y) = 0;
         
         % Now we need to update our location with the action we have
         % chosen.
-        res = update_location(action, x_loc, y_loc, direc);
-        x_loc = res.new_x;
-        y_loc = res.new_y;
-        direc = res.new_direc;
+        res = CS4300_Wumpus_transition(agent_state, action, board);
+        if res(1) == -1 && res(2) == -1 && res(3) == -1
+            board(agent_state(1), agent_state(2)) = 1;
+            return;
+        end
+        agent_state(1) = res(1);
+        agent_state(2) = res(2);
+        agent_state(3) = res(3);
+        board(CS4300_board_translation(agent_state(1)), agent_state(2)) = 0;
         
         % Check if we are at the gold
-        if percept(2) == 1
-            initial_state = [x_loc, y_loc, direc];
-            board(translation(x_loc), translation(y_loc)) = 2;
-            [so, no] = CS4300_Wumpus_A_star(board, initial_state, goal_state, h_name);
+        if percept(3)
+            initial_state = [agent_state(1), agent_state(2), agent_state(3)];
+            board(CS4300_board_translation(agent_state(1)), agent_state(2)) = 2;
+            [so, no] = CS4300_Wumpus_A_star(board, initial_state, goal_state, 'CS4300_heuristic');
             state = 1;
         end
                 
     % Our other state is if we have found the gold and need to go home
     case 1
-        if step == 0
+        if step == 1
             action = GRAB;
         else
-            if step <= size(so, m)
-                action = so(4, step);
+            if step <= size(so, 1)
+                action = so(step, 4);
             else
                 action = CLIMB;
             end

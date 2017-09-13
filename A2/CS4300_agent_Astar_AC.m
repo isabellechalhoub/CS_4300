@@ -33,12 +33,18 @@ function action = CS4300_agent_Astar_AC(percept)
 
 % First:
 %   uses percepts to delete labels appropriately
+
+Be brave unless there is a breeze. (random choice)
+If there is a known safe cell - go there, if multiple, pick random
+If only breezes, pick random
+Once we know where the gold is - A-star home
+
 % Second:
 %   uses AC to update D
 % Third:
 %   determines if a safe cell exists that has not been visited, and if so 
 %   uses A* to plan a travel action sequence to get there, otherwise 
-%   randomly chooses from {F orward, Right, Left}
+%   randomly chooses from {Forward, Right, Left}
 % Fourth:
 %   if it is in the cell with gold, then it creates an escape action 
 %   sequence; e.g., [GRAB,<move to [1,1]>,CLIMB]

@@ -54,9 +54,9 @@ if action==FORWARD
     next_state = [x,y,d];
     r = 4 - y + 1;
     c = x;
-    if board(r,c)==1|board(r,c)==3|board(r,c)==4
-        next_state = [-1,-1,-1];
-    end
+%     if board(r,c)==1|board(r,c)==3|board(r,c)==4
+%         next_state = [-1,-1,-1];
+%     end
     return
 end
 if action==RIGHT

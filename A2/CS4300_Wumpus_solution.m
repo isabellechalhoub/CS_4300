@@ -4,7 +4,7 @@ function b = CS4300_Wumpus_solution(board,state,goal)
 %     board (4x4 array): Wumpus board
 %     state (1x3 vector): [x,y,d]
 %     goal (1x3 vector): [x,y,gold]
-%        x,y: x,y coords to achive (if >0)
+%        x,y: x,y coords to achieve (if >0)
 %        gold: 1 if need to be in gold cell
 % On output:
 %     b (Boolean): 0 if not solution, else 1
