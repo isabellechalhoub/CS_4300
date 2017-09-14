@@ -60,11 +60,7 @@ switch state
         end
         
         action = ceil((3)*rand(1));
-        
-        % Since we have safely traveled to this new location, it is safe.
-        
-        % Now we need to update our location with the action we have
-        % chosen.
+
         res = CS4300_Wumpus_transition(agent_state, action, board);
         if res(1) == -1 && res(2) == -1 && res(3) == -1
             board(agent_state(1), agent_state(2)) = 1;

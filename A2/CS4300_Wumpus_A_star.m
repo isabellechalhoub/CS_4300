@@ -100,11 +100,7 @@ while true
             next_list = [next_list, num_nodes];
         end
     end
-    % Sort univisted list for next iteration - sort by cost val
-    % Order by cost column - take node column as new unvisited.
-    % sortrows(matrix, row u wanna sort by) or sort columns
     unvisited = CS4300_sort_by_cost([unvisited,next_list], nodes);
-    %unvisited = sortrows(unvisited, nodes.cost);
 end
 
 end

@@ -19,7 +19,7 @@ function res = CS4300_A2_driver(initial_max_steps, plot_it)
 % Run the 2000 trials experiment multiple times with different values for
 % the max number of steps.
 
-max_steps = 100;
+max_steps = 60;
 res.pos = zeros(1, (max_steps-initial_max_steps));
 res.neg = zeros(1, (max_steps-initial_max_steps));
 res.meanies = zeros(1, (max_steps-initial_max_steps));
@@ -58,7 +58,9 @@ for steps = initial_max_steps:max_steps
                 succeeded = true;
             end
         end
-        total_steps_home = total_steps_home + steps_home;
+        if succeeded == true
+            total_steps_home = total_steps_home + steps_home;
+        end
         steps_home = 0;
     end
 
@@ -87,7 +89,7 @@ if (plot_it)
     errorbar(x, y, err);
     hold off;
     %plot(res.success_rate);
-    plot(res.avg_steps_home);
+    %plot(res.avg_steps_home);
 end
 end
 

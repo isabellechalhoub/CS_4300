@@ -21,9 +21,6 @@ function D_revised = CS4300_AC3(G,D,P)
 %   Fall 2017
 %
 
-% Pseudocode:
-% Create arc queue:
-
 arc_queue = [];
 % generate the initial domains
 for d_index=1:size(D,1)

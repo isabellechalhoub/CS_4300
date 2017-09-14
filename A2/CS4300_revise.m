@@ -1,5 +1,15 @@
 function D_revised = CS4300_revise( arc, D, P )
 %CS4300_REVISE Checks for any revisions between the labels of arcs
+% On input:
+%   arc: the arc to check consistency with
+%   D: Domain matrix of the system
+%   P: Predicate function
+% On ouput:
+%   D_revised - the revised domain
+% Author:
+%   Isabelle Chalhoub   Karla Kraiss
+%   u0678302            u0830999
+%   Fall 2017%
 
 D_revised = D;
 consistent = false;
