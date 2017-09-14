@@ -21,5 +21,34 @@ function D_revised = CS4300_AC3(G,D,P)
 %   Fall 2017
 %
 
+% Pseudocode:
+% Create arc queue:
+
+arc_queue = [];
+% generate the initial domains
+for d_index=1:size(D,1)
+    if D(d_index, 1) == 1 && D(d_index, 2) == 0 && D(d_index, 3) == 0
+        arc_queue = CS4300_domain_finder(arc_queue, G, d_index);
+    end
+end
+D_revised = D;
+
+while ~isempty(arc_queue)
+%revise all the arcs that could be affected
+    D_revised = CS4300_revise(arc_queue(1,:), D, P);
+    %add the children of a revised node
+    if D_revised ~= D
+        temp = arc_queue(1);
+        arc_queue = CS4300_domain_finder(arc_queue, G, temp);
+    end
+
+    %remove the revised node
+    if size(arc_queue) > 1
+            arc_queue = arc_queue(2:end);
+    else
+        arc_queue = [];
+    end
+end
+
 end
 

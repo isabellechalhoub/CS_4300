@@ -43,12 +43,22 @@ if isempty(state)
     agent_state(3) = 0;
     board = ones(4,4);
     board(CS4300_board_translation(agent_state(1)), agent_state(2)) = 0;
-    step = 1;
+    step = 2;
 end
 
 switch state
     % In our initial state, we just randomly look for gold.
     case 0
+        
+        if percept(3)
+            initial_state = [agent_state(1), agent_state(2), agent_state(3)];
+            board(CS4300_board_translation(agent_state(1)), agent_state(2)) = 2;
+            [so, no] = CS4300_Wumpus_A_star(board, initial_state, goal_state, 'CS4300_heuristic');
+            state = 1;
+            action = GRAB;
+            return;
+        end
+        
         action = ceil((3)*rand(1));
         
         % Since we have safely traveled to this new location, it is safe.
@@ -64,26 +74,15 @@ switch state
         agent_state(2) = res(2);
         agent_state(3) = res(3);
         board(CS4300_board_translation(agent_state(1)), agent_state(2)) = 0;
-        
-        % Check if we are at the gold
-        if percept(3)
-            initial_state = [agent_state(1), agent_state(2), agent_state(3)];
-            board(CS4300_board_translation(agent_state(1)), agent_state(2)) = 2;
-            [so, no] = CS4300_Wumpus_A_star(board, initial_state, goal_state, 'CS4300_heuristic');
-            state = 1;
-        end
                 
     % Our other state is if we have found the gold and need to go home
     case 1
-        if step == 1
-            action = GRAB;
+        if step <= size(so, 1)
+            action = so(step, 4);
         else
-            if step <= size(so, 1)
-                action = so(step, 4);
-            else
-                action = CLIMB;
-            end
+            action = CLIMB;
         end
+        
         step = step + 1;
 end
 
