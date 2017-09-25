@@ -1,4 +1,22 @@
 function [ neis ] = CS4300_Wumpus_neighbors( x, y )
+% CS4300_Wumpus_neighbors - generate neighboring cells given a cell's
+%   coordinates
+%   On input:
+%       x : The x coordinate for the provided cell
+%       y : The y coordinate for the provided cell
+%   On output:
+%       neis : a 2 x n matrix of neighboring cell coordinates
+%           The (1) index holds the x coord and the (2) index holds the y
+%           coord for the given neighboring cell. The n dimension is
+%           between 2 and 4 and is dependent on whether the cell is an
+%           edge, center, or corner cell.
+%   Call:
+%       neis = CS4300_Wumpus_neighbors(x,y);
+% Author:
+%   Isabelle Chalhoub   Karla Kraiss
+%   u0678302            u0830999
+%   Fall 2017
+%
 
 neis = [];
 

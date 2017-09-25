@@ -1,5 +1,5 @@
 function [KB] = CS4300_gen_KB
-% BR_gen_KB - generate Wumpus World logic in KB
+% CS4300_gen_KB - generate Wumpus World logic in KB
 %   On input:
 %       N/A
 %   On output:

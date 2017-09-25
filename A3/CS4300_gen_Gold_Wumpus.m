@@ -1,4 +1,18 @@
-function [ KB_out ] = CS4300_gen_Wumpus( KB, char )
+function [ KB_out ] = CS4300_gen_Gold_Wumpus( KB, char )
+% CS4300_gen_Gold_Wumpus - generate gold and wumpus disjunctions
+%   On input:
+%       KB   : the knowledge base the disjunctions should be added to
+%       char1 : the character that should be used for the disjunctions
+%               either 'G' or 'W'
+%   On output:
+%       KB_out : The updated knowledge base
+%   Call:
+%       KB = CS4300_gen_Gold_Wumpus(KB, 'G');
+% Author:
+%   Isabelle Chalhoub   Karla Kraiss
+%   u0678302            u0830999
+%   Fall 2017
+%
 
 BLANK = ' ';
 

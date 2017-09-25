@@ -1,4 +1,22 @@
 function [ KB_out ] = CS4300_gen_Breezes( KB, char1, char2)
+% CS4300_gen_Breeze_Stench - generate breeze disjuctions with pits or
+%   stench disjunctions with the wumpus
+%   On input:
+%       KB   : the knowledge base the disjunctions should be added to
+%       char1 : the character that should be used for the first part of the
+%               disjunction. This should be 'B' or 'S'
+%       char2 : the character that should be used for the second part of the
+%               disjunction. This should be 'P' or 'W' 
+%               (correlating to the matching character to the first character)
+%   On output:
+%       KB_out : The updated knowledge base
+%   Call:
+%       KB = CS4300_gen_Breeze_Stench(KB, 'B', 'P');
+% Author:
+%   Isabelle Chalhoub   Karla Kraiss
+%   u0678302            u0830999
+%   Fall 2017
+%
 
 BLANK = ' ';
 

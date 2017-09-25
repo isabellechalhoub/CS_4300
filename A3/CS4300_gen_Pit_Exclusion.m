@@ -1,4 +1,18 @@
 function [ KB_out ] = CS4300_gen_Pit_Exclusion( KB, char )
+% CS4300_gen_Pit_Exclusion - generate pit exclusion disjunctions
+%   On input:
+%       KB   : the knowledge base the disjunctions should be added to
+%       char : the character that should be paired with the excluded pit 
+%              disjunctions. Either a 'W' or 'G' 
+%   On output:
+%       KB_out : The updated knowledge base
+%   Call:
+%       KB = CS4300_gen_Pit_Exclusion(KB, 'W');
+% Author:
+%   Isabelle Chalhoub   Karla Kraiss
+%   u0678302            u0830999
+%   Fall 2017
+%
 
 BLANK = ' ';
 
