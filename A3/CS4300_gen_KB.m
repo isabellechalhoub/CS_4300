@@ -1,4 +1,4 @@
-function [KB] = CS4300_gen_KB
+function [KB, KBi, vars] = CS4300_gen_KB
 % CS4300_gen_KB - generate Wumpus World logic in KB
 %   On input:
 %       N/A
@@ -17,27 +17,34 @@ function [KB] = CS4300_gen_KB
 %   Fall 2017
 %
 
+translation = [0, 4, 8, 12;
+               1, 5, 9, 13;
+               2, 6, 10, 14;
+               3, 7, 11, 15];
+
 KB = [];
+KBi = [];
+vars = CS4300_gen_vars();
 
 % Generate Breeze Disjunctions
-KB = CS4300_gen_Breeze_Stench(KB, 'B', 'P');
+[KB,KBi] = CS4300_gen_Breeze_Stench(KB, KBi, 'B', 'P', translation);
 
 % Generate Gold Disjunctions
-KB = CS4300_gen_Gold_Wumpus(KB, 'G');
+[KB,KBi] = CS4300_gen_Gold_Wumpus(KB, KBi, 'G');
 
 % Generate Pit Disjunctions
-KB = CS4300_gen_Pit_Exclusion(KB, 'G');
-KB = CS4300_gen_Pit_Exclusion(KB, 'W');
+[KB,KBi] = CS4300_gen_Pit_Exclusion(KB, KBi, 'G', translation);
+[KB,KBi] = CS4300_gen_Pit_Exclusion(KB, KBi, 'W', translation);
 
 % Generate Stench Disjunctions
-KB = CS4300_gen_Breeze_Stench(KB, 'S', 'W');
+[KB,KBi] = CS4300_gen_Breeze_Stench(KB, KBi, 'S', 'W', translation);
 
 % Generate Wumpus Disjunctions
-KB = CS4300_gen_Gold_Wumpus(KB, 'W');
+[KB,KBi] = CS4300_gen_Gold_Wumpus(KB, KBi, 'W');
 
 % Generate Ad Hoc Disjunctions
-KB = CS4300_gen_adHoc(KB, 'G');
-KB = CS4300_gen_adHoc(KB, 'W');
+[KB,KBi] = CS4300_gen_adHoc(KB, KBi, 'G', translation);
+[KB,KBi] = CS4300_gen_adHoc(KB, KBi, 'W', translation);
 
 end
 
