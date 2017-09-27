@@ -31,22 +31,35 @@ function Sip = CS4300_RTP(sentences,thm,vars)
 %   Else, add the new clause and continue.
 %   Before adding the clause, call unique!
 
+num_clauses = length(sentences);
+for n=1:length(thm)
+    num_clauses = num_clauses + 1;
+    sentences(num_clauses).clauses = [thm(n).clauses];
+end
+
+num_resolvents = 1;
+
 while true
-    for i=1:length(KBi)
-        for j=i+1:length(KBi)
-            resolvents = CS4300_resolve(KBi(i).clause, KBi(j).clause);
-            if (isempty(resolvents))
+    for i=1:length(sentences)
+        for j=i+1:length(sentences)
+            resolvents(num_resolvents).clauses = CS4300_resolve(sentences(i).clauses, sentences(j).clauses);
+            if (isempty(resolvents(num_resolvents).clauses))
                 Sip = [];
                 return;
             end
+            num_resolvents = num_resolvents + 1;
         end
     end
-    if all(ismember(resolvents, KBi))
-        Sip = [1];
+    resolvents = CS4300_check_dupes(resolvents, sentences);
+    resolvents = CS4300_add_unique(resolvents);
+    if isempty(resolvents)
+        % TODO what do we return here?
+        Sip = sentences;
         return;
     end
-    KBi = [KBi, resolvents];
-    KBi = unique(KBi, resolvents);
+    
+    % TODO need to only add unique resolvents
+    sentences = [sentences, resolvents];
 end
 end
 

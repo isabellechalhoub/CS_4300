@@ -38,5 +38,7 @@ if ~isempty(to_remove)
     end
 end
 
+resolvents = unique(resolvents);
+
 end
 

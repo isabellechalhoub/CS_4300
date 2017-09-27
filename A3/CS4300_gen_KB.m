@@ -1,4 +1,4 @@
-function [KB, KBi, vars] = CS4300_gen_KB
+function [KB, KBi, vars, varsi] = CS4300_gen_KB
 % CS4300_gen_KB - generate Wumpus World logic in KB
 %   On input:
 %       N/A
