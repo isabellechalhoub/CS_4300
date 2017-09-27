@@ -10,7 +10,7 @@ function [KB, KBi, vars] = CS4300_gen_KB
 %       vars(struct: vector of strings): list of atom strings
 %       (k).var (string): name of atom
 %   Call:
-%       [KB,KBi,vars] = CS4300_gen_KB;
+%       [KB,KBi,vars] = CS4300_gen_KB();
 % Author:
 %   Isabelle Chalhoub   Karla Kraiss
 %   u0678302            u0830999
