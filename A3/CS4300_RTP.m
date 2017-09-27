@@ -24,5 +24,7 @@ function Sip = CS4300_RTP(sentences,thm,vars)
 %   Fall 2017
 %
 
+
+
 end
 

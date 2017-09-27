@@ -25,6 +25,7 @@ translation = [0, 4, 8, 12;
 KB = [];
 KBi = [];
 vars = CS4300_gen_vars();
+varsi = CS4300_gen_varsi(translation);
 
 % Generate Breeze Disjunctions
 [KB,KBi] = CS4300_gen_Breeze_Stench(KB, KBi, 'B', 'P', translation);
