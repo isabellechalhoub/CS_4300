@@ -34,12 +34,14 @@ function Sip = CS4300_RTP(sentences,thm,vars)
 num_clauses = length(sentences);
 for n=1:length(thm)
     num_clauses = num_clauses + 1;
-    sentences(num_clauses).clauses = [thm(n).clauses];
+    sentences(num_clauses).clauses = [-1*(thm(n).clauses)];
 end
 
-num_resolvents = 1;
+sentences = CS4300_add_unique(sentences);
 
 while true
+    resolvents = [];
+    num_resolvents = 1;
     for i=1:length(sentences)
         for j=i+1:length(sentences)
             resolvents(num_resolvents).clauses = CS4300_resolve(sentences(i).clauses, sentences(j).clauses);
@@ -53,12 +55,10 @@ while true
     resolvents = CS4300_check_dupes(resolvents, sentences);
     resolvents = CS4300_add_unique(resolvents);
     if isempty(resolvents)
-        % TODO what do we return here?
         Sip = sentences;
         return;
     end
     
-    % TODO need to only add unique resolvents
     sentences = [sentences, resolvents];
 end
 end
