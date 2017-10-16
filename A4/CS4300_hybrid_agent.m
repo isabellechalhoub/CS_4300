@@ -18,6 +18,8 @@ persistent KB;
 persistent KBi;
 persistent vars;
 persistent state;
+persistent have_arrow;
+persistent plan;
 
 % Generate everything
 if isempty(state)
@@ -25,16 +27,28 @@ if isempty(state)
     xCoord = 1;
     yCoord = 1;
     [KB, KBi, vars] = CS4300_gen_KB();
+    have_arrow = true;
 end
 
 % make it a sentence
 sentence = CS4300_make_percept_sentence(percept, xCoord, yCoord);
 
 % Update the KB with the new sentence
-CS4300_Tell(KB, sentence);
+for i=1:3
+    KBi = CS4300_Tell(KBi, sentence(i))
+end
 
-% Do action thangs
+% if we are at gold
+%   plan = grab + plan_route(current, (1,1)) + climb
+% else if we have a safe unvisited cell
+%   plan = plan_route(current, safe/unvisited cell)
+% else if we have an arrow and ask(kb) says we possibly know where wump is
+%   plan = plan_shot(current, wumpus_loc)
+% else if there is a "not unsafe" cell
+%   plan = plan_route(current, that cell)
+% else go home
+%   plan = plan_route(current, (1,1)) + climb
 
-% ask for a safe action
+% pop the next action of the plan stack
 
-% do the thang
+% return the chosen action
