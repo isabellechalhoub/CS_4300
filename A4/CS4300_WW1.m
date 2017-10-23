@@ -65,4 +65,5 @@ while step<max_steps&done==0
     if agent.alive==0|agent.succeed==1|agent.climbed==1
         done = 1;
     end
+    score
 end

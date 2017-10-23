@@ -36,6 +36,7 @@ for ind = 1:len_Ti
         sorted_clauses(ind,2) = nind;
     end
 end
+
 indexes_pos = find(sorted_clauses(:,1)>0);
 num_pos = length(indexes_pos);
 indexes_neg = find(sorted_clauses(:,1)<0);
@@ -46,6 +47,7 @@ if num_pos*num_neg==0
 end
 
 len_Ui = 0;
+
 for p = 1:num_pos
     p_clause = Ti(indexes_pos(p)).clauses;
     p_index = sorted_clauses(indexes_pos(p),2);

@@ -42,7 +42,7 @@ end
 if percept(2) == 1
     sentence(2).clauses = translation(x, y) + 1;
 else
-    sentence(2).clauses = -1*(translation(x, y) + 49);
+    sentence(2).clauses = -1*(translation(x, y) + 1);
 end
 
 % Glitter

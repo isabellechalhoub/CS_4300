@@ -39,6 +39,8 @@ function Sip = CS4300_RTP(sentences,thm,vars)
 %     Summer 2014
 %
 
+timerVal = tic;
+
 num_sentences = length(sentences);
 len_thm = length(thm(1).clauses);
 not_thm = -thm(1).clauses;
@@ -50,13 +52,18 @@ end
 n = length(vars);
 Sipn = sentences;
 for i = 1:n
-    Sip = CS4300_elim_L_nL(Sipn);
-    Ti = CS4300_parent_clauses(Sip,vars(i));
-    Ui = CS4300_resolvent_clauses(Ti,vars(i));
-    if CS4300_empty_clause(Ui)
-        Sip = [];
+    if toc(timerVal) < 60
+        Sip = CS4300_elim_L_nL(Sipn);
+        Ti = CS4300_parent_clauses(Sip,vars(i));
+        Ui = CS4300_resolvent_clauses(Ti,vars(i));
+        if CS4300_empty_clause(Ui)
+            Sip = [];
+            return
+        end
+        Sipn = CS4300_update_S(Sip,Ti,Ui);
+    else
+        Sip = [1];
         return
     end
-    Sipn = CS4300_update_S(Sip,Ti,Ui);
 end
 Sip = Sipn;

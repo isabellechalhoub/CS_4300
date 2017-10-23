@@ -1,4 +1,4 @@
-function next_state = CS4300_Wumpus_transition(state,action,board)
+function next_state = CS4300_Wumpus_transition(state,action,board,goal_state)
 % CS4300_Wumpus_transition - transition function for Wumpus action
 % On input:
 %     state (1x3 vector): [x,y,dir] state of agent
@@ -52,9 +52,12 @@ if action==FORWARD
         y = y - 1;
     end
     next_state = [x,y,d];
+    if next_state == goal_state
+        return;
+    end
     r = 4 - y + 1;
     c = x;
-    if board(r,c)==1|board(r,c)==3|board(r,c)==4
+    if board(r,c)==1|board(r,c)==3|board(r,c)==4|board(r,c)==-1
         next_state = [-1,-1,-1];
     end
     return

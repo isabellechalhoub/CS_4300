@@ -17,6 +17,7 @@ function b = CS4300_Ask(KB,sentence)
 %   u0678302            u0830999
 %   Fall 2017
 
+vars = [1:80];
 
 Sip = CS4300_RTP(KB, sentence, vars);
 

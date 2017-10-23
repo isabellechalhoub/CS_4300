@@ -15,7 +15,6 @@ function Sn = CS4300_update_S(Sip,Ti,Ui)
 %     UU
 %     Summer 2014
 %
-
 Sn = [];
 
 len_Sip = length(Sip);
