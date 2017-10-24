@@ -46,10 +46,15 @@ if isempty(t)
     wumpus_loc = [-1,-1];
 end
 
-translation = [0, 4, 8, 12;
-               1, 5, 9, 13;
-               2, 6, 10, 14;
-               3, 7, 11, 15];
+% translation = [0, 4, 8, 12;
+%                1, 5, 9, 13;
+%                2, 6, 10, 14;
+%                3, 7, 11, 15];
+
+translation = [0,1,2,3;
+               4,5,6,7;
+               8,9,10,11;
+               12,13,14,15];
 
 locations = [2,1;
              3,1;
@@ -97,6 +102,11 @@ if have_gold == 0
     for i=1:num_neighbors
         n_x = neighbors(i,1);
         n_y = neighbors(i,2);
+        
+        if percept(1) == 0 && percept(2) == 0
+            safe(4-n_y+1,n_x) = 1;
+        end
+        
         if (board(4-n_y+1,n_x) == -1)
             [a,thm1,thm2] = CS4300_find_safe_neighbor(KBi, [n_x, n_y]);
 
@@ -104,20 +114,20 @@ if have_gold == 0
                 safe(4-n_y+1,n_x) = 1;
                 board(4-n_y+1,n_x) = 0;
 
-    %             s.clauses = thm1;
-    %             KBi = CS4300_Tell(KBi,s);
-    %             s.clauses = thm2;
-    %             KBi = CS4300_Tell(KBi,s);
+                s.clauses = thm1;
+                KBi = CS4300_Tell(KBi,s);
+                s.clauses = thm2;
+                KBi = CS4300_Tell(KBi,s);
             elseif strcmp(a,'pit')
                 board(4-n_y+1,n_x) = 1;
 
-    %             s.clauses = thm1;
-    %             KBi = CS4300_Tell(KBi,s);
+                s.clauses = thm1;
+                KBi = CS4300_Tell(KBi,s);
             elseif strcmp(a,'wumpus')
                 board(4-n_y+1,n_x) = 3;
 
-    %             s.clauses = thm1;
-    %             KBi = CS4300_Tell(KBi,s);
+                s.clauses = thm1;
+                KBi = CS4300_Tell(KBi,s);
                 wumpus_loc = [n_x,n_y];
             end
         end
@@ -151,6 +161,7 @@ if isempty(plan)
             goal = neighbors(n,:);
         end
     end
+    lets_shoot = 0;
     if isempty(goal)
         [rows,cols] = find(board==-1);
         if isempty(rows)
@@ -158,10 +169,18 @@ if isempty(plan)
         else
             goal = [cols(1),4-rows(1)+1];
         end
+%     elseif have_arrow == 1
+%         goal = [agent.x,agent.y,ceil((3)*rand(1))];
+%         lets_shoot = 1;
+%     end
     end
     [so,no] = CS4300_Wumpus_A_star(board,[agent.x,agent.y,agent.dir],...
         [goal,0],'CS4300_A_star_Man');
     plan = [so(2:end,end)];
+    
+    if lets_shoot == 1
+        plan = [plan, 5];
+    end
 end
 
 if isempty(plan) && wumpus_loc(1) > 0
@@ -199,5 +218,9 @@ end
 
 if action==GRAB
     have_gold = 1;
+end
+
+if action==SHOOT
+    have_arrow = 0;
 end
 t = t + 1;

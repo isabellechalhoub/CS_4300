@@ -2,10 +2,15 @@ function [ a,thm1,thm2 ] = CS4300_find_safe_neighbor( KB, loc)
 %CS4300_FIND_SAFE_UNVISITED Summary of this function goes here
 %   Detailed explanation goes here
 
-translation = [0, 4, 8, 12;
-               1, 5, 9, 13;
-               2, 6, 10, 14;
-               3, 7, 11, 15];
+% translation = [0, 4, 8, 12;
+%                1, 5, 9, 13;
+%                2, 6, 10, 14;
+%                3, 7, 11, 15];
+
+translation = [0,1,2,3;
+               4,5,6,7;
+               8,9,10,11;
+               12,13,14,15];
            
 a = '';
 thm1 = [];
