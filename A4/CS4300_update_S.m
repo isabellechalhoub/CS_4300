@@ -24,15 +24,23 @@ len_Ui = length(Ui);
 len_Sn = 0;
 
 found = zeros(len_Sip,1);
+
+timerVal = tic;
+
 for ind_Ti = 1:len_Ti
-    clause_Ti = Ti(ind_Ti).clauses;
-    s_Ti = sort(clause_Ti);
-    for ind_Sip = 1:len_Sip
-        clause_Sip = Sip(ind_Sip).clauses;
-        s_Sip = sort(clause_Sip);
-        if (length(s_Ti)==length(s_Sip))&prod(s_Ti==s_Sip)==1
-            found(ind_Sip) = 1;
+    if toc(timerVal) < 30
+        clause_Ti = Ti(ind_Ti).clauses;
+        s_Ti = sort(clause_Ti);
+        for ind_Sip = 1:len_Sip
+            clause_Sip = Sip(ind_Sip).clauses;
+            s_Sip = sort(clause_Sip);
+            if (length(s_Ti)==length(s_Sip))&prod(s_Ti==s_Sip)==1
+                found(ind_Sip) = 1;
+            end
         end
+    else
+        disp('breakin');
+        break;
     end
 end
 indexes = find(found==0);

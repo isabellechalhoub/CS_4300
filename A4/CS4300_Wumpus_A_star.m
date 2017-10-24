@@ -56,7 +56,8 @@ frontier = [1];
 explored = [];
 while 1==1
     if isempty(frontier)
-        solution = [];
+        action = ceil((3)*rand(1));
+        solution = [1,1,0,0;0,0,0,action];
         return
     end
     node = frontier(1);
