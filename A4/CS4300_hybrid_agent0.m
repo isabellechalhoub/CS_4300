@@ -23,7 +23,7 @@ function action = CS4300_hybrid_agent0(percept)
 %     Fall 2015
 %
 
-persistent t plan board agent safe visited have_gold pits Wumpus have_arrow KBi wumpus_loc;
+persistent t plan board agent safe visited have_gold pits Wumpus have_arrow KBi wumpus;
 
 if isempty(t)
     t = 0;
@@ -37,13 +37,13 @@ if isempty(t)
     agent.y = 1;
     agent.dir = 0;
     visited = zeros(4,4);
-    visited(4,1) = 1;
+    %visited(4,1) = 1;
     safe = zeros(4,4);
     safe(4,1) = 1;
     have_gold = 0;
     have_arrow = 1;
     [KB, KBi, vars] = BR_gen_KB();
-    wumpus_loc = [-1,-1];
+    wumpus = 1;
 end
 
 % translation = [0, 4, 8, 12;
@@ -81,7 +81,16 @@ GRAB = 4;
 SHOOT = 5;
 CLIMB = 6;
 
-if have_gold == 0
+if percept(5) == 1
+    wumpus = 0;
+end
+
+if have_gold == 0 && visited(4-agent.y+1,agent.x) == 0
+    
+%     if t == 0
+%         visited(4-agent.y+1,agent.x) = 1;
+%     end
+    
     sentence = CS4300_make_percept_sentence(percept, agent.x, agent.y);
 
     for i=1:3
@@ -108,7 +117,7 @@ if have_gold == 0
         end
         
         if (board(4-n_y+1,n_x) == -1)
-            [a,thm1,thm2] = CS4300_find_safe_neighbor(KBi, [n_x, n_y]);
+            [a,thm1,thm2] = CS4300_find_safe_neighbor(KBi, [n_x, n_y], wumpus);
 
             if strcmp(a,'safe')
                 safe(4-n_y+1,n_x) = 1;
@@ -123,16 +132,20 @@ if have_gold == 0
 
                 s.clauses = thm1;
                 KBi = CS4300_Tell(KBi,s);
-            elseif strcmp(a,'wumpus')
+                pits(4-n_y+1,n_x) = 0;
+            elseif strcmp(a,'wumpus') && wumpus == 1
                 board(4-n_y+1,n_x) = 3;
 
                 s.clauses = thm1;
                 KBi = CS4300_Tell(KBi,s);
-                wumpus_loc = [n_x,n_y];
+                Wumpus(4-n_y+1,n_x) = 0;
             end
         end
     end
 end
+
+visited(4-agent.y+1,agent.x) = 1;
+safe(4-agent.y+1,agent.x) = 1;
 
 if have_gold==0&percept(3)==1
     disp('gold plan');
@@ -161,7 +174,6 @@ if isempty(plan)
             goal = neighbors(n,:);
         end
     end
-    lets_shoot = 0;
     if isempty(goal)
         [rows,cols] = find(board==-1);
         if isempty(rows)
@@ -169,22 +181,14 @@ if isempty(plan)
         else
             goal = [cols(1),4-rows(1)+1];
         end
-%     elseif have_arrow == 1
-%         goal = [agent.x,agent.y,ceil((3)*rand(1))];
-%         lets_shoot = 1;
-%     end
+    elseif have_arrow == 1 && wumpus == 1
+        plan = [ceil((2)*rand(1)) + 1, 5];
     end
-    [so,no] = CS4300_Wumpus_A_star(board,[agent.x,agent.y,agent.dir],...
-        [goal,0],'CS4300_A_star_Man');
-    plan = [so(2:end,end)];
-    
-    if lets_shoot == 1
-        plan = [plan, 5];
+    if isempty(plan)
+        [so,no] = CS4300_Wumpus_A_star(board,[agent.x,agent.y,agent.dir],...
+            [goal,0],'CS4300_A_star_Man');
+        plan = [so(2:end,end)];
     end
-end
-
-if isempty(plan) && wumpus_loc(1) > 0
-    x = 'found wumpus'
 end
 
 if isempty(plan)
@@ -204,7 +208,7 @@ if action==FORWARD
     [x_new,y_new] = CS4300_move(agent.x,agent.y,agent.dir);
     agent.x = x_new;
     agent.y = y_new;
-    visited(4-y_new+1,x_new) = 1;
+    %visited(4-y_new+1,x_new) = 1;
     board(4-y_new+1,x_new) = 0;
 end
 
