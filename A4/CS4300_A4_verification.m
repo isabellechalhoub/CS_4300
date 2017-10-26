@@ -1,4 +1,4 @@
-function [ mps_correct, ask_correct ] = CS4300_A4_verification()
+function [ mps_correct ] = CS4300_A4_verification()
 %CS4300_A4_VERIFICATION Summary of this function goes here
 %   Detailed explanation goes here
 

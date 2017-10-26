@@ -148,14 +148,12 @@ visited(4-agent.y+1,agent.x) = 1;
 safe(4-agent.y+1,agent.x) = 1;
 
 if have_gold==0&percept(3)==1
-    disp('gold plan');
     [so,no] = CS4300_Wumpus_A_star(board,[agent.x,agent.y,agent.dir],...
         [1,1,0],'CS4300_A_star_Man');
     plan = [GRAB;so(2:end,end);CLIMB];
 end
 
 if isempty(plan)
-    disp('first plan');
     OK1 = CS4300_choose1(safe,visited);
     if ~isempty(OK1)
         [so,no] = CS4300_Wumpus_A_star(board,[agent.x,agent.y,agent.dir],...
@@ -165,7 +163,6 @@ if isempty(plan)
 end
 
 if isempty(plan)
-    disp('second plan');
     goal = [];
     neighbors = CS4300_Wumpus_neighbors(agent.x,agent.y);
     num_neighbors = length(neighbors(:,1));
@@ -192,7 +189,6 @@ if isempty(plan)
 end
 
 if isempty(plan)
-    disp('default plan');
     [so,no] = CS4300_Wumpus_A_star(board,[agent.x,agent.y,agent.dir],...
         [1,1,0],'CS4300_A_star_Man');
     plan = [so(2:end,end)];
