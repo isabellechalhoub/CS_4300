@@ -18,7 +18,7 @@ function action = CS4300_hybrid_agent0(percept)
 % Call:
 %     a = CS4300_hybrid_agent0(percept);
 % Author:
-%     T. Henderson
+%     T. Henderson & Isabelle Chalhoub & Karla Kraiss
 %     UU
 %     Fall 2015
 %
@@ -37,7 +37,6 @@ if isempty(t)
     agent.y = 1;
     agent.dir = 0;
     visited = zeros(4,4);
-    %visited(4,1) = 1;
     safe = zeros(4,4);
     safe(4,1) = 1;
     have_gold = 0;
@@ -86,10 +85,6 @@ if percept(5) == 1
 end
 
 if have_gold == 0 && visited(4-agent.y+1,agent.x) == 0
-    
-%     if t == 0
-%         visited(4-agent.y+1,agent.x) = 1;
-%     end
     
     sentence = CS4300_make_percept_sentence(percept, agent.x, agent.y);
 
@@ -148,6 +143,7 @@ visited(4-agent.y+1,agent.x) = 1;
 safe(4-agent.y+1,agent.x) = 1;
 
 if have_gold==0&percept(3)==1
+    board(4-agent.y+1,agent.x) = 2;
     [so,no] = CS4300_Wumpus_A_star(board,[agent.x,agent.y,agent.dir],...
         [1,1,0],'CS4300_A_star_Man');
     plan = [GRAB;so(2:end,end);CLIMB];
@@ -194,9 +190,6 @@ if isempty(plan)
     plan = [so(2:end,end)];
 end
 
-safe
-board
-
 action = plan(1);
 plan = plan(2:end);
 
@@ -204,7 +197,6 @@ if action==FORWARD
     [x_new,y_new] = CS4300_move(agent.x,agent.y,agent.dir);
     agent.x = x_new;
     agent.y = y_new;
-    %visited(4-y_new+1,x_new) = 1;
     board(4-y_new+1,x_new) = 0;
 end
 

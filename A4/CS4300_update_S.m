@@ -28,7 +28,7 @@ found = zeros(len_Sip,1);
 timerVal = tic;
 
 for ind_Ti = 1:len_Ti
-    if toc(timerVal) < 30
+    if toc(timerVal) < 15
         clause_Ti = Ti(ind_Ti).clauses;
         s_Ti = sort(clause_Ti);
         for ind_Sip = 1:len_Sip
@@ -39,7 +39,6 @@ for ind_Ti = 1:len_Ti
             end
         end
     else
-        disp('breakin');
         break;
     end
 end

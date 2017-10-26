@@ -52,7 +52,7 @@ end
 n = length(vars);
 Sipn = sentences;
 for i = 1:n
-    if toc(timerVal) < 60
+    if toc(timerVal) < 30
         Sip = CS4300_elim_L_nL(Sipn);
         Ti = CS4300_parent_clauses(Sip,vars(i));
         Ui = CS4300_resolvent_clauses(Ti,vars(i));
