@@ -31,7 +31,7 @@ SHOOT = 5;
 CLIMB = 6;
 
 persistent safe pits Wumpus breezes stench board have_gold have_arrow risk;
-persistent agent frontier visited t escape travel kill;
+persistent agent frontier visited t escape travel kill wump_alive;
 
 if isempty(agent)
     t = 0;
@@ -56,6 +56,7 @@ if isempty(agent)
     escape = [];
     travel = [];
     kill = [];
+    wump_alive = 1;
 end
 
 if percept(5)==1
@@ -63,6 +64,9 @@ if percept(5)==1
     board(rW,cW) = 0;
     safe(rW,cW) = 1;
     Wumpus(rW,cW) = 0;
+    pit(rW,cW) = 0;
+    stench = zeros(4,4);
+    wump_alive = 0;
 end
 
 if ~isempty(escape)
@@ -130,14 +134,16 @@ end
 % Update boards with percept info:
 
 % Wumpus stuff:
-if percept(1) == 1
-    stench(4-agent.y+1,agent.x) = 1;
-    Wumpus = CS4300_Wumpus_Neighbor_Clear(Wumpus, agent.x, agent.y);
-else
-    stench(4-agent.y+1,agent.x) = 0;
-    neis = BR_Wumpus_neighbors(agent.x, agent.y);
-    for i=1:length(neis)
-        Wumpus(4-neis(i,2)+1,neis(i,1)) = 0;
+if wump_alive == 1
+    if percept(1) == 1
+        stench(4-agent.y+1,agent.x) = 1;
+        Wumpus = CS4300_Wumpus_Neighbor_Clear(Wumpus, agent.x, agent.y);
+    else
+        stench(4-agent.y+1,agent.x) = 0;
+        neis = BR_Wumpus_neighbors(agent.x, agent.y);
+        for i=1:length(neis)
+            Wumpus(4-neis(i,2)+1,neis(i,1)) = 0;
+        end
     end
 end
 
@@ -165,24 +171,22 @@ end
 
 [px,py] = find(pit_prob==1);
 if ~isempty(px)
-    pits(4-py+1,px) = 1;
-    Wumpus(4-py+1,px) = 0;
+    pits(px,py) = 1;
+    Wumpus(px,py) = 0;
 end
 
 [wx,wy] = find(wumpus_prob==1);
 if ~isempty(wx)
-    Wumpus(4-wy+1,wx) = 1;
-    pits(4-wy+1,wx) = 0;
+    Wumpus(wx,wy) = 1;
+    pits(wx,wy) = 0;
 end
 
-
-% this is wrong! - need to fix - use max?
-unsafe_board = pit_prob + wumpus_prob
+%unsafe_board = pit_prob + wumpus_prob
+unsafe_board = max(pit_prob, wumpus_prob);
 
 % shoot wumpus if wumpus location is known (or threshold?)
 [wx, wy] = find(Wumpus==1);
-if ~isempty(wx)
-    % murder !!!!!
+if ~isempty(wx)  && have_arrow == 1 && isempty(kill)
     fprintf('kill\n');
 end
 

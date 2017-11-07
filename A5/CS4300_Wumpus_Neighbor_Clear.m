@@ -21,8 +21,8 @@ wumpus_board_out = zeros(4,4);
 agent_neis = BR_Wumpus_neighbors(agent_loc_x, agent_loc_y);
 
 for i=1:length(agent_neis)
-    wumpus_board_out(4-agent_neis(i,1)+1, agent_neis(i,2)) = wumpus_board(...
-        4-agent_neis(i,1)+1, agent_neis(i,2));
+    wumpus_board_out(4-agent_neis(i,2)+1, agent_neis(i,1)) = wumpus_board(...
+        4-agent_neis(i,2)+1, agent_neis(i,1));
 end
 
 
