@@ -118,6 +118,7 @@ if have_gold==0&percept(3)==1
     return
 end
 
+% Do something with the percept
 percept_sentence = CS4300_make_percept_sentence(percept,agent.x,agent.y);
 KB = CS4300_Tell(KB,percept_sentence);
 
