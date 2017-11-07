@@ -166,15 +166,17 @@ end
 [px,py] = find(pit_prob==1);
 if ~isempty(px)
     pits(4-py+1,px) = 1;
+    Wumpus(4-py+1,px) = 0;
 end
 
 [wx,wy] = find(wumpus_prob==1);
 if ~isempty(wx)
     Wumpus(4-wy+1,wx) = 1;
+    pits(4-wy+1,wx) = 0;
 end
 
 
-% this is wrong! - need to fix
+% this is wrong! - need to fix - use max?
 unsafe_board = pit_prob + wumpus_prob
 
 % shoot wumpus if wumpus location is known (or threshold?)
