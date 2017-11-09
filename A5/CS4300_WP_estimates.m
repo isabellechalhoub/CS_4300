@@ -52,7 +52,7 @@ for k=1:10000
             for j=1:4
                 if board(i,j) == 1
                     pit_sum(i,j) = pit_sum(i,j) + 1;
-                elseif board(i,j)
+                elseif board(i,j) == 3
                     wump_sum(i,j) = wump_sum(i,j) + 1;
                 end
             end
