@@ -6,10 +6,11 @@ function [ good_board ] = CS4300_check_board(board,breezes,stench)
 % On output:
 %     good_board : true/false if the info matches the board or not
 % Call:
-%     board = [0,0,1,0;0,1,0,0;0,0,1,0;0,0,0,1;];
-%     percept_board = -ones(4,4);
-%     percept_board(4,1) = 0;
-%     percept_board(2,3) = 1;
+%     board = [0,0,1,0;0,1,0,3;0,0,1,0;0,0,0,1;];
+%     breezes = -ones(4,4);
+%     breezes(4,1) = 1;
+%     stench = -ones(4,4);
+%     stench(3,3) = 1;
 %     gb = CS4300_check_board(board, percept_board); == 1
 % Author:
 %     Isabelle Chalhoub   Karla Kraiss

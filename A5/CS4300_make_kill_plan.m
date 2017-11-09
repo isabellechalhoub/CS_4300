@@ -1,6 +1,19 @@
 function [ kill ] = CS4300_make_kill_plan(agent,wx,wy)
-%CS4300_MAKE_KILL_PLAN Summary of this function goes here
-%   Detailed explanation goes here
+% CS4300_make_kill_plan - creates a plan to kill the wumpus
+% On input:
+%     agent (1x3 vector): x,y,dir of agent
+%     wx : x coord of wumpus
+%     wy : y coord of wumpus
+% On output:
+%     kill (kx1) : series of actions to take to kill the wumpus
+% Call:
+%     kill = CS4300_A_star_Man([1,1,0],1,2);
+% Author:
+%     Isabelle Chalhoub     Karla Kraiss
+%     UU
+%     Fall 2016
+%
+
 
 SHOOT = 5;
 kill = SHOOT;

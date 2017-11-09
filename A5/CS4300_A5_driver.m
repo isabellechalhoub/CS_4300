@@ -1,4 +1,23 @@
 function [res] = CS4300_A5_driver(num_trials)
+% CS4300_A5_driver - runs the MC agent for a number of trials on each of a 
+%   set 250 boards to calculate the average score and success of the agent
+% On input:
+%     num_trials : how many trials to run on each board
+% On output:
+%     res (struct) : various computations
+%       total_scores (1x250) : total sum of scores achieved on each board
+%       successes (1x250) : total number of successes on each board
+%       score (250xnum_trials) : singular score for the board on that trial
+%       averages (1x250) : average score per board
+%       variances (1x250) : variance per board
+%       mean : total average score of every trial of every board
+% Call:
+%     a = CS4300_A5_driver(10);
+% Author:
+%     Isabelle Chalhoub     Karla Kraiss
+%     UU
+%     Fall 2016
+%
 
 load('A5_boards.mat');
 
@@ -6,20 +25,7 @@ res.total_scores = zeros(1,250);
 res.successes = zeros(1,250);
 res.score = zeros(250,num_trials);
 
-% for i=1:num_trials
-%     i
-%     for j=1:250
-%         clear('CS4300_MC_agent');
-%         [scr,trc] = CS4300_WW1(50,'CS4300_agent1',boards(j).board);
-%         res.total_scores(j) = res.total_scores(j) + scr;
-%         if scr > 0
-%             res.successes(j) = res.successes(j) + 1;
-%         end
-%     end
-% end
-
 for j=1:250
-    j
     for i=1:num_trials
         clear('CS4300_MC_agent');
         [scr,trc] = CS4300_WW1(50,'CS4300_MC_agent',boards(j).board);
@@ -34,12 +40,5 @@ for j=1:250
 end
 
 res.mean = sum(res.averages)/250;
-
-%res.averages = res.total_scores/num_trials;
-% res.mean = 0;
-% for k=1:250
-%     res.mean = res.mean + res.averages(k);
-% end
-% res.mean = res.mean/250;
 end
 
