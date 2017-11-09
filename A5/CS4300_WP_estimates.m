@@ -36,29 +36,33 @@ function [pits,Wumpus] = CS4300_WP_estimates(breezes,stenches,num_trials)
 %   Fall 2017
 %
 
-pit_count = 0;
+probability = 0.2;
 pit_sum = zeros(4,4);
-pit_probability = 0.2;
-
-wump_count = 0;
 wump_sum = zeros(4,4);
+valid_trials = 0;
 
-for i=1:num_trials
-    pit_board = CS4300_gen_pit_board(pit_probability);
-    if CS4300_check_board(pit_board, breezes)
-        pit_sum  = pit_sum + pit_board;
-        pit_count = pit_count + 1;
+for k=1:10000
+    if valid_trials == num_trials
+        break
     end
-    
-    wump_board = CS4300_gen_wumpus_board();
-    if CS4300_check_board(wump_board, stenches)
-        wump_sum = wump_sum + wump_board;
-        wump_count = wump_count + 1;
+    board = CS4300_gen_board(probability);
+    if CS4300_check_board(board,breezes,stenches)
+        valid_trials = valid_trials + 1;
+        for i=1:4
+            for j=1:4
+                if board(i,j) == 1
+                    pit_sum(i,j) = pit_sum(i,j) + 1;
+                elseif board(i,j)
+                    wump_sum(i,j) = wump_sum(i,j) + 1;
+                end
+            end
+        end
     end
 end
 
-pits = pit_sum/pit_count;
-Wumpus = wump_sum/wump_count;
+pits = pit_sum/valid_trials;
+Wumpus = wump_sum/valid_trials;
+
 if isnan(Wumpus(1,1))
     Wumpus = double(~isnan(Wumpus));
 end
