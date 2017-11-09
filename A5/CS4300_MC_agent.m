@@ -178,7 +178,7 @@ if percept(1) == 0 && percept(2) == 0
 end
 
 % Update probability boards:
-[pit_prob,wumpus_prob] = CS4300_WP_estimates(breezes,stench,50);
+[pit_prob,wumpus_prob] = CS4300_WP_estimates(breezes,stench,100);
 
 if wump_alive == 0
     pits(wump_loc(1),wump_loc(2)) = 0;
