@@ -24,8 +24,8 @@ current_low = 0.2;
 
 for i=1:length(agent_neis)
     if visited(4-agent_neis(i,2)+1, agent_neis(i,1)) ~= 1
-        if current_low > unsafe_board(4-agent_neis(i,2)+1, agent_neis(i, 1))
-            current_low = unsafe_board(4-agent_neis(i,2)+1, agent_neis(i, 1));
+        if current_low > unsafe_board(4-agent_neis(i,2)+1, agent_neis(i,1))
+            current_low = unsafe_board(4-agent_neis(i,2)+1, agent_neis(i,1));
             safest_neighbor = agent_neis(i,:);
         end
     end

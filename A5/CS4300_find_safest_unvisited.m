@@ -19,6 +19,7 @@ function [ safest_cell ] = CS4300_find_safest_unvisited(unsafe_board, ...
 cells = [1,2;1,3;1,4;2,1;2,2;2,3;2,4;3,1;3,2;3,3;3,4;4,1;4,2;4,3;4,4];
 
 current_low = 1;
+safest_cell = [-1,-1];
 
 for i=1:15
     if visited(4-cells(i,2)+1, cells(i,1)) ~= 1

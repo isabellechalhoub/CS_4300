@@ -59,7 +59,9 @@ end
 
 pits = pit_sum/pit_count;
 Wumpus = wump_sum/wump_count;
-
+if isnan(Wumpus(1,1))
+    Wumpus = double(~isnan(Wumpus));
+end
 
 
 

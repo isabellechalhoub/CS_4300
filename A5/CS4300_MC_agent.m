@@ -31,7 +31,7 @@ SHOOT = 5;
 CLIMB = 6;
 
 persistent safe pits Wumpus breezes stench board have_gold have_arrow risk;
-persistent agent frontier visited t escape travel kill wump_alive;
+persistent agent frontier visited t escape travel kill wump_alive wump_loc;
 
 if isempty(agent)
     t = 0;
@@ -57,16 +57,18 @@ if isempty(agent)
     travel = [];
     kill = [];
     wump_alive = 1;
+    wump_loc = [];
 end
 
 if percept(5)==1
     [rW,cW] = find(Wumpus==1);
+    wump_loc = [rW,cW];
     board(rW,cW) = 0;
     safe(rW,cW) = 1;
     Wumpus(rW,cW) = 0;
-    pit(rW,cW) = 0;
-    stench = zeros(4,4);
+    pits(rW,cW) = 0;
     wump_alive = 0;
+    stench = zeros(4,4);
 end
 
 if ~isempty(escape)
@@ -88,6 +90,9 @@ if ~isempty(travel)
     visited(4-agent.y+1,agent.x) = 1;
     frontier(4-agent.y+1,agent.x) = 0;
     board(4-agent.y+1,agent.x) = 0;
+    safe(4-agent.y+1,agent.x) = 1;
+    pits(4-agent.y+1,agent.x) = 0;
+    Wumpus(4-agent.y+1,agent.x) = 0;
     return
 end
 
@@ -105,11 +110,17 @@ end
 if ~isempty(kill)
     action = kill(1);
     kill = kill(2:end);
+    if action == 5
+        have_arrow = 0;
+    end
     % Update agent's idea of state
     agent = CS4300_agent_update(agent,action);
     visited(4-agent.y+1,agent.x) = 1;
     frontier(4-agent.y+1,agent.x) = 0;
     board(4-agent.y+1,agent.x) = 0;
+    safe(4-agent.y+1,agent.x) = 1;
+    pits(4-agent.y+1,agent.x) = 0;
+    Wumpus(4-agent.y+1,agent.x) = 0;
     return
 end
 
@@ -167,30 +178,49 @@ if percept(1) == 0 && percept(2) == 0
 end
 
 % Update probability boards:
-[pit_prob,wumpus_prob] = CS4300_WP_estimates(breezes,stench,10000);
+[pit_prob,wumpus_prob] = CS4300_WP_estimates(breezes,stench,2000);
+
+if wump_alive == 0
+    pits(wump_loc(1),wump_loc(2)) = 0;
+    pit_prob(wump_loc(1),wump_loc(2)) = 0;
+    wumpus_prob(wump_loc(1),wump_loc(2)) = 0;
+end
 
 [px,py] = find(pit_prob==1);
 if ~isempty(px)
     pits(px,py) = 1;
+    safe(px,py) = 0;
     Wumpus(px,py) = 0;
 end
 
 [wx,wy] = find(wumpus_prob==1);
 if ~isempty(wx)
+    visited(wx,wy) = 1;
     Wumpus(wx,wy) = 1;
+    safe(wx,wy) = 0;
     pits(wx,wy) = 0;
 end
 
-%unsafe_board = pit_prob + wumpus_prob
 unsafe_board = max(pit_prob, wumpus_prob);
 
 % shoot wumpus if wumpus location is known (or threshold?)
 [wx, wy] = find(Wumpus==1);
-if ~isempty(wx)  && have_arrow == 1 && isempty(kill)
-    fprintf('kill\n');
+if ~isempty(wx)  && have_arrow == 1
+    kill = CS4300_make_kill_plan(agent,wx,wy);
+    action = kill(1);
+    if action == 5
+        have_arrow = 0;
+    end
+    kill = kill(2:end);
+    % Update agent?s idea of state
+    agent = CS4300_agent_update(agent,action);
+    visited(4-agent.y+1,agent.x) = 1;
+    frontier(4-agent.y+1,agent.x) = 0;
+    board(4-agent.y+1,agent.x) = 0;
+    return
 end
-
-% pick the safest unvisited neighbor if Wumpus unknown
+    
+%pick the safest unvisited neighbor if Wumpus unknown
 if isempty(kill)
     safest_nei = CS4300_Find_Safest_Neighbor(unsafe_board, agent.x, agent.y, visited);
     if safest_nei > 0
@@ -211,19 +241,54 @@ end
 
 if isempty(travel) && isempty(kill)
     safest_cell = CS4300_find_safest_unvisited(unsafe_board,visited);
-    temp = board(4-safest_cell(2)+1,safest_cell(1));
-    board(4-safest_cell(2)+1,safest_cell(1)) = 0;
-    [so,no] = CS4300_Wumpus_A_star(board,...
-        [agent.x,agent.y,agent.dir],...
-        [safest_cell(1),safest_cell(2),0],'CS4300_A_star_Man');
-    board(4-safest_cell(2)+1,safest_cell(1)) = temp;
-    travel = [so(2:end,4)];
-    action = travel(1);
-    travel = travel(2:end);
-    % Update agent's idea of state
-    agent = CS4300_agent_update(agent,action);
-    visited(4-agent.y+1,agent.x) = 1;
-    frontier(4-agent.y+1,agent.x) = 0;
-    board(4-agent.y+1,agent.x) = 0;
-    return
+    if (safest_cell(1) ~= -1)
+        temp = board(4-safest_cell(2)+1,safest_cell(1));
+        board(4-safest_cell(2)+1,safest_cell(1)) = 0;
+        [so,no] = CS4300_Wumpus_A_star(board,...
+            [agent.x,agent.y,agent.dir],...
+            [safest_cell(1),safest_cell(2),0],'CS4300_A_star_Man');
+        board(4-safest_cell(2)+1,safest_cell(1)) = temp;
+        travel = [so(2:end,4)];
+        action = travel(1);
+        travel = travel(2:end);
+        % Update agent's idea of state
+        agent = CS4300_agent_update(agent,action);
+        visited(4-agent.y+1,agent.x) = 1;
+        frontier(4-agent.y+1,agent.x) = 0;
+        board(4-agent.y+1,agent.x) = 0;
+        return
+    % We have visited everything so we should either kill or go home
+    else
+        [rW,cW] = find(Wumpus==1);
+        if wump_alive == 1 && ~isempty(rW) && have_arrow == 1
+            % try to kill the wumpus
+            kill = CS4300_make_kill_plan(agent,rW,cW);
+            action = kill(1);
+            if action == 5
+                have_arrow = 0;
+            end
+            kill = kill(2:end);
+            % Update agent?s idea of state
+            agent = CS4300_agent_update(agent,action);
+            visited(4-agent.y+1,agent.x) = 1;
+            frontier(4-agent.y+1,agent.x) = 0;
+            board(4-agent.y+1,agent.x) = 0;
+            return
+        else
+            % go home
+            [so,no] = CS4300_Wumpus_A_star(board,...
+                [agent.x,agent.y,agent.dir],...
+                [1,1,0],'CS4300_A_star_Man');
+            travel = [so(2:end,4)];
+            travel = [travel;CLIMB];
+            action = travel(1);
+            travel = travel(2:end);
+            % Update agent's idea of state
+            agent = CS4300_agent_update(agent,action);
+            visited(4-agent.y+1,agent.x) = 1;
+            frontier(4-agent.y+1,agent.x) = 0;
+            board(4-agent.y+1,agent.x) = 0;
+            return
+        end
+    end
 end
