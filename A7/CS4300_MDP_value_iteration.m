@@ -15,7 +15,7 @@ function [U,Ut] = CS4300_MDP_value_iteration(S,A,P,R,gamma,...
 %   U (vector): state utilities
 %   U_trace (iterxn): trace of utility values during iteration
 % Call:
-%   [U,Ut] = Cs4300_MDP_value_iteration(S,A,P,R,0.999999,0.1,100);
+%   [U,Ut] = CS4300_MDP_value_iteration(S,A,P,R,0.999999,0.1,100);
 %
 %   Set up a driver function, CS_4300_run_value_iteration (see
 %   below), which sets up the Markov Decision Problem and calls this

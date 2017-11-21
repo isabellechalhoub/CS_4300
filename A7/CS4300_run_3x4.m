@@ -16,7 +16,7 @@ A = [1:4];
 R = [-0.04, -0.04, -0.04, -0.04, -0.04, 0, -0.04, -1, -0.04, -0.04, ...
     -0.04, 1];
 
-%garbage ugly stuff don’t look at it
+%garbage ugly stuff don't look at it
 P(1,1).probs = zeros(1,12);
 P(1,1).probs(1) = .1;
 P(1,1).probs(2) = .1;
@@ -96,9 +96,9 @@ P(5,1).probs(5) = .2;
 P(5,1).probs(9) = .8;
 
 P(5,2).probs = zeros(1,12);
-P(5,1).probs(1) = .1;
-P(5,1).probs(5) = .8;
-P(5,1).probs(9) = .1;
+P(5,2).probs(1) = .1;
+P(5,2).probs(5) = .8;
+P(5,2).probs(9) = .1;
 
 P(5,3).probs = zeros(1,12);
 P(5,3).probs(1) = .8;
