@@ -1,4 +1,4 @@
-function [U,U_trace] = CS4300_MDP_value_iteration(S,A,P,R,gamma,...
+function [U,Ut] = CS4300_MDP_value_iteration(S,A,P,R,gamma,...
     eta,max_iter)
 % CS4300_MDP_value_iteration - compute policy using value iteration
 % On input:
@@ -28,7 +28,7 @@ function [U,U_trace] = CS4300_MDP_value_iteration(S,A,P,R,gamma,...
 %       0.8116 0.8678 0.9178 1.0000
 %
 %   Layout:              1
-% ˆ                     ^
+%                        ^
 %     9 10 11 12         |
 %     5  6  7  8     2 <- -> 4
 %     1  2  3  4         |
@@ -68,6 +68,7 @@ while delta >= eta*((1-gamma)/gamma)
     end
 end
 
+% DO THE TRACE
+Ut = 0;
 
 end
-
