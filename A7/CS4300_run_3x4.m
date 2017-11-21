@@ -96,9 +96,9 @@ P(5,1).probs(5) = .2;
 P(5,1).probs(9) = .8;
 
 P(5,2).probs = zeros(1,12);
-P(5,1).probs(1) = .1;
-P(5,1).probs(5) = .8;
-P(5,1).probs(9) = .1;
+P(5,2).probs(1) = .1;
+P(5,2).probs(5) = .8;
+P(5,2).probs(9) = .1;
 
 P(5,3).probs = zeros(1,12);
 P(5,3).probs(1) = .8;
