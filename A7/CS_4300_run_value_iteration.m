@@ -272,5 +272,53 @@ P(16,4).probs = zeros(1,16);
 % generate the expected utilities
 [U, Ut] = CS4300_MDP_value_iteration(S,A,P,R,0.999999,0.1,100);
 
+num_states = length(S);
+
+fake_policy = zeros(1, num_states);
+
+% fake policy for verification
+for i=1:num_states
+    max_nei = -Inf;
+    dir = 0;
+    %check each neighbor
+    %up check
+    if i <= (num_states - 4)
+        if U(i+4) > max_nei
+            max_nei = U(i+4);
+            dir = 1;
+        end
+    end
+    %left check
+    if mod(i, 4) ~= 1
+        if U(i-1) > max_nei
+            max_nei = U(i-1);
+            dir = 2;
+        end
+    end
+    %down check
+    if i >= 5
+        if U(i-4) > max_nei
+            max_nei = U(i-4);
+            dir = 3;
+        end
+    end
+    %right check
+    if mod(i, 4) ~= 0
+        if U(i+1) > max_nei
+            max_nei = U(i+1);
+            dir = 4;
+        end
+    end
+    
+    fake_policy(i) = dir;
+end
+
+fake_policy(3) = 0;
+fake_policy(7) = 0;
+fake_policy(11) = 0;
+fake_policy(16) = 0;
+
+fake_policy
+
 end
 

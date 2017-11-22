@@ -201,6 +201,24 @@ P(12,3).probs = zeros(1,12);
 P(12,4).probs = zeros(1,12);
 
 
-[U, Ut] = CS4300_MDP_value_iteration(S,A,P,R,0.999999,0.1,100);
+[U, Ut] = CS4300_MDP_value_iteration(S,A,P,R,0.999,0.1,100);
+
+Ut(6) = 0;
+Ut(8) = 0;
+Ut(12) = 0;
+
+plot(Ut(:,12))
+hold on
+xlabel('number of iterations')
+ylabel('Utility estimates')
+axis([3 length(Ut)+2 0 1.2])
+plot(Ut(:,11))
+plot(Ut(:,3))
+plot(Ut(:,4))
+plot(Ut(:,12))
+plot(Ut(:,6))
+legend('(4,3)', '(3,3)', '(3,1)', '(4,1)', '(2,2)')
+axis([3 length(Ut)+10 -0.2 1.2])
+title('3x4 Changing Utilities During Runtime (Gamma = .999)')
 
 end

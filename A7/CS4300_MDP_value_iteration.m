@@ -44,10 +44,12 @@ num_states = length(S);
 num_actions = length(A);
 
 U = zeros(1,num_states);
+Ut = U;
 Up = U;
 delta = Inf;
-
-while delta >= eta*((1-gamma)/gamma)
+iter_count = 0;
+while delta >= eta*((1-gamma)/gamma) && iter_count <= max_iter
+    iter_count = iter_count + 1;
     U = Up;
     delta = 0;
     for s = 1:num_states
@@ -66,9 +68,7 @@ while delta >= eta*((1-gamma)/gamma)
             delta = abs(Up(s) - U(s));
         end
     end
+    Ut = [Ut;U];
 end
-
-% DO THE TRACE
-Ut = 0;
 
 end
