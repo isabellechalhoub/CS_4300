@@ -36,8 +36,7 @@ for s=1:num_states
             a_index = a;
         end
     end
-    
-    policy(s) = a;
+     policy(s) = a_index;
 end
 
 end
