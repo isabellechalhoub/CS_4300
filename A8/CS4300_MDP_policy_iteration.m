@@ -52,17 +52,19 @@ num_actions = length(A);
 U = zeros(1, num_states);
 Ut = 0;
 
-% random?????
 policy = ones(1, num_states);
 
 unchanged = false;
 
-while ~unchanged
+for i=1:k
+    if unchanged
+        break;
+    end
     U = CS4300_policy_eval(policy,U,S,P,R,k,gamma);
     unchanged = true;
     for s=1:num_states
-        a_max = -Inf;
-        a_index = 0;
+        max_EU = -Inf;
+        a_max = 0;
         for a=1:num_actions
             EU = 0;
             EP = 0;
@@ -70,13 +72,13 @@ while ~unchanged
                 EU = EU + P(s,a).probs(sp)*U(sp);
                 EP = EP + P(s,policy(s)).probs(sp)*U(sp);
             end
-            if a_max < EU
-                a_max = EU;
-                a_index = a;
+            if max_EU < EU
+                max_EU = EU;
+                a_max = a;
             end
         end
-        if EU > EP
-            policy(s) = a_index;
+        if max_EU > EP
+            policy(s) = a_max;
             unchanged = false;
         end
     end

@@ -1,4 +1,4 @@
-function [S,A,R,P,U,Ut] = CS4300_run_3x4()
+function [S,A,R,P,U,Ut, policy] = CS4300_run_3x4()
 % CS_4300_run_value_iteration_verification
 %
 % sets up the Markov Decision Problem and calls this
@@ -201,6 +201,5 @@ P(12,3).probs = zeros(1,12);
 P(12,4).probs = zeros(1,12);
 
 
-[policy, U, Ut] = CS4300_MDP_policy_iteration(S,A,P,R,10,0.999999);
-policy
+[policy, U, Ut] = CS4300_MDP_policy_iteration(S,A,P,R,20,0.999999);
 end

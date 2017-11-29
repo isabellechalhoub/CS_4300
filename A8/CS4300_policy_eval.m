@@ -21,12 +21,12 @@ function [ Ures ] = CS4300_policy_eval(policy,U,S,P,R,k,gamma)
 
 num_states = length(S);
 
-for i=1:k % 10 seems to be pretty good - how bad is a lower k could be on report
-    Ures = zeros(1,num_states);
+for i=1:k % 10 seems to be pretty good
+    Ures = zeros(num_states,1);
     for s=1:num_states
         EU = 0;
         for sp=1:num_states
-            EU = P(s,policy(s)).probs(sp) * U(sp);
+            EU = EU + P(s,policy(s)).probs(sp) * U(sp);
         end
         Ures(s) = R(s) + (gamma*EU);
     end
