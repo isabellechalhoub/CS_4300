@@ -15,7 +15,7 @@ function [policy,U,Ut] = CS4300_MDP_policy_iteration(S,A,P,R,k,gamma)
 % Call:
 %
 %   Layout:              1
-%                        ?
+%                        ^
 %   9 10 11 12           |
 %   5  6  7  8       2 <- -> 4
 %   1  2  3  4           |
@@ -50,7 +50,7 @@ num_states = length(S);
 num_actions = length(A);
 
 U = zeros(1, num_states);
-Ut = 0;
+Ut = U;
 
 policy = ones(1, num_states);
 
@@ -82,4 +82,5 @@ for i=1:k
             unchanged = false;
         end
     end
+    Ut = [Ut;U];
 end

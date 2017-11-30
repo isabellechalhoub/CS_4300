@@ -1,5 +1,5 @@
-function [S,A,R,P,U,Ut,policy] = CS_4300_run_policy_iteration(a,b)
-% CS_4300_run_policy_iteration - sets up the Markov Decision Problem 
+function [S,A,R,P,U,Ut,policy] = CS4300_run_policy_iteration(a,b)
+% CS4300_run_policy_iteration - sets up the Markov Decision Problem 
 % and calls this function.
 %
 % Chapter 17 Russell and Norvig (Table p. 651)
@@ -270,7 +270,7 @@ P(16,3).probs = zeros(1,16);
 P(16,4).probs = zeros(1,16);
 
 % generate the expected utilities
-[policy, U, Ut] = CS4300_MDP_policy_iteration(S,A,P,R,20,0.999999);
+[policy, U, Ut] = CS4300_MDP_policy_iteration(S,A,P,R,3,0.999999);
 
 end
 

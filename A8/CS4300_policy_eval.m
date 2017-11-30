@@ -32,6 +32,6 @@ for i=1:k % 10 seems to be pretty good
     end
     U = Ures;
 end
-
+Ures = Ures';
 end
 
