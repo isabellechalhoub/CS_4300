@@ -13,8 +13,11 @@ function [S,A,R,P,U,Ut, policy] = CS4300_run_3x4()
 S = [1:12];
 A = [1:4];
 
-R = [-0.04, -0.04, -0.04, -0.04, -0.04, 0, -0.04, -1, -0.04, -0.04, ...
-    -0.04, 1];
+reward = -0.04;
+R = reward*ones(1,12);
+R(6) = 0;
+R(8) = -1;
+R(12) = 1;
 
 %garbage ugly stuff don't look at it
 P(1,1).probs = zeros(1,12);
