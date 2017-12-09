@@ -49,7 +49,7 @@ nodes(1).state = initial_state;
 nodes(1).action = 0;
 nodes(1).cost = 0;
 nodes(1).g = 0;
-nodes(1).h = feval(h_name,initial_state,goal_state,board);
+nodes(1).h = feval(h_name,initial_state,goal_state);
 nodes(1).children = [];
 num_nodes = 1;
 frontier = [1];
@@ -80,7 +80,7 @@ while 1==1
             nodes(num_nodes).state = next_state;
             nodes(num_nodes).action = action;
             nodes(num_nodes).g = nodes(node).g + 1;
-            nodes(num_nodes).h = feval(h_name,next_state,goal_state,board);
+            nodes(num_nodes).h = feval(h_name,next_state,goal_state);
             nodes(num_nodes).cost = nodes(num_nodes).g...
                 + nodes(num_nodes).h;
             nodes(num_nodes).children = [];

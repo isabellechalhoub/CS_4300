@@ -1,4 +1,4 @@
-function d = CS4300_A_star_Man(state1,state2,board)
+function d = CS4300_A_star_Man(state1,state2)
 % CS4300_A_star_Man - computes Manhattan distance between two Wumpus states
 % On input:
 %     state1 (1x3 vector): x,y,dir of state 1
@@ -10,11 +10,7 @@ function d = CS4300_A_star_Man(state1,state2,board)
 % Author:
 %     Isabelle Chalhoub Karla Kraiss
 %     UU
-%     Fall 2016
+%     Fall 2017
 %
 
 d = sum(abs(state1(1:2)-state2(1:2)));
-
-% if board(4-state1(2)+1,state1(1)) == -1
-%     d = d + 3;
-% end
