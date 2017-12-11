@@ -7,7 +7,13 @@ function [percent] = CS4300_percent_correct(X,y,w)
 %   w ((m+1)x1 vector): the weight of the samples
 % On output:
 %   percent: the percentage of correct predictions
-
+% Call:
+%   [percent] = CS4300_percent_correct(X,y,w);
+% Author:
+%   Isabelle Chalhoub       Karla Kraiss
+%   UU
+%   Fall 2017
+%
 correct_count = 0;
 
 for x_i=1: length(y)

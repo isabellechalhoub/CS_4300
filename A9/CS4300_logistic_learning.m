@@ -39,9 +39,9 @@ while ~done
     y_r = y(k);
     x_r = [1,X(k,:)];
     hw = (1/(1+exp(dot(-x_r,w))));
-    per_cor(iter) = CS4300_percent_correct(X, y, w);
+    [per_cor(iter), se(iter)] = CS4300_percent_correct_and_error(X, y, w);
     %move this into the error method? since we're exceeding bounds
-    se = se + (y(iter) - CS4300_error(w, [1,X(iter,:)]))^2;
+    %se = se + (y(iter) - CS4300_error(w, [1,X(iter,:)]))^2;
     if per_cor(iter) == 1 || iter > max_iter
         done = true;
     else

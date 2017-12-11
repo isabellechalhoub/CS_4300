@@ -66,7 +66,7 @@ plot(dnl(indnln,1),dnl(indnln,2),'r*');
 y = zeros(length(dnl(:,1)),1);
 y(indnlq) = 1;
 
-[w,pc,Se] = CS4300_LL(dnl,y,0.1,50000,1);
+[w,pc,Se] = CS4300_logistic_learning(dnl,y,0.1,50000,1);
 
 y = (-w(1)-w(2)*x)/w(3);
 plot(x,y);
