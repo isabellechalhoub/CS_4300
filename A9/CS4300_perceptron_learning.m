@@ -22,27 +22,29 @@ function [w,per_cor] = ...
 
 % add 1's column to the beginning of x so it is n by m+1
 n = size(X,1);
-X = [ones(n,1) X];
 m = size(X,2);
 
-% initialize w to small rand number
-w = rand*ones(m,1);
+% initialize w to contain small rand numbers
+w = rand(1, m+1) - .5;
 
 done = false;
-iter = 0;
+iter = 1;
 
 while ~done
     if rate
         alpha = 1000/(1000+iter);
     end
-    hw = (X*w >= 0);
-    per_cor = sum(hw == y)/n;
-    if per_cor == 1 || iter >= max_iter
+    k = ceil(rand * n);
+    y_r = y(k);
+    x_r = [1,X(k,:)];
+    hw = (dot(w,x_r) >= 0);
+    per_cor(iter) = CS4300_percent_correct(X, y, w);
+    if per_cor(iter) == 1 || iter > max_iter
         done = true;
     else
-        k = ceil(rand * n);
-        x = X(k,:);
-        w = w + alpha(y-hw) * x;
+        for j = 1: m + 1
+            w(j) = w(j) + alpha * (y_r - hw) * x_r(j);
+        end
     end
 iter = iter + 1;
 end

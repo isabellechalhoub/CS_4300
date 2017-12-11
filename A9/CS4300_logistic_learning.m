@@ -23,27 +23,32 @@ function [w,per_cor,Se] = ...
 
 % add 1's column to the beginning of x so it is n by m+1
 n = size(X,1);
-X = [ones(n,1) X];
+m = size(X,2);
 
-% initialize w to small rand number
-w = rand*ones(m,1);
+% initialize w to contain small rand numbers
+w = rand(1, m+1) - .5;
 
 done = false;
-iter = 0;
+iter = 1;
 
 while ~done
     if rate
-        alpha = 1000/(1000/iter);
+        alpha = 1000/(1000+iter);
     end
-    hw = (1/(1+exp(-X*w)));
-%     error = calculate error;  (squared per sample) - look at notebook
-    if error == 0 || iter >= max_iter
+    k = ceil(rand * n);
+    y_r = y(k);
+    x_r = [1,X(k,:)];
+    hw = (1/(1+exp(dot(-x_r,w))));
+    per_cor(iter) = CS4300_percent_correct(X, y, w);
+    Se = Se + (y(iter) - CS4300(w, [1,X(iter,:)]))^2;
+    if per_cor(iter) == 1 || iter > max_iter
         done = true;
     else
-        k = ceil(rand * n);
-        x = X(k,:);
-        w = w + alpha(y-hw) * x;
+        for j = 1: m + 1
+           w(j) = w(j) + alpha * (y_r - hw) * hw * (1-hw) * x_r(j);
+        end
     end
+iter = iter + 1;
 end
 
 end

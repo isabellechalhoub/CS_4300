@@ -41,7 +41,7 @@ plot(dnl(indnln,1),dnl(indnln,2),'r*');
 y = zeros(length(dnl(:,1)),1);
 y(indnlq) = 1;
 
-[w,pc,t] = CS4300_PL(dnl,y,0.1,50000,0);
+[w,pc] = CS4300_perceptron_learning(dnl,y,0.1,50000,0);
 
 y = (-w(1)-w(2)*x)/w(3);
 plot(x,y);
