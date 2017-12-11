@@ -1,7 +1,7 @@
 function CS4300_demo_perceptron
 %
 
-[dl,dnl,indlq,indln,indnlq,indnln] = CS5350_gen_nuke_quake_data;
+[dl,dnl,indlq,indln,indnlq,indnln] = CS4300_gen_nuke_quake_data();
 
 figure(1);
 clf
