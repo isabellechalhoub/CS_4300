@@ -1,4 +1,4 @@
-function [w,per_cor,Se] = ...
+function [w,per_cor,se] = ...
     CS4300_logistic_learning(X,y,alpha,max_iter,rate)
 % CS4300_logistic_learning - find linear separating hyperplane
 %   Eqn 18.8, p. 727 Russell and Norvig
@@ -27,7 +27,7 @@ m = size(X,2);
 
 % initialize w to contain small rand numbers
 w = rand(1, m+1) - .5;
-
+se = 1;
 done = false;
 iter = 1;
 
@@ -40,7 +40,8 @@ while ~done
     x_r = [1,X(k,:)];
     hw = (1/(1+exp(dot(-x_r,w))));
     per_cor(iter) = CS4300_percent_correct(X, y, w);
-    Se = Se + (y(iter) - CS4300(w, [1,X(iter,:)]))^2;
+    %move this into the error method? since we're exceeding bounds
+    se = se + (y(iter) - CS4300_error(w, [1,X(iter,:)]))^2;
     if per_cor(iter) == 1 || iter > max_iter
         done = true;
     else
